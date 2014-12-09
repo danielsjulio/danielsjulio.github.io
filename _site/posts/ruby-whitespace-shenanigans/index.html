@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+        Ruby Whitespace Shenanigans, Hello World Edition &middot; qrohlf.com
+        
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A (somewhat silly) post about using Unicode whitespace in Ruby.">
+    
+    <link rel="icon" href="/favicon.png">
+    <link rel="alternate" type="application/rss+xml"  title="RSS"   href="/feed.xml" />
+    <script src="//use.typekit.net/cup5bnl.js"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+</head>
+<body>
+<header class="masthead">
+  <div class="content">
+    <a class="arrow-left" href="/"></a><h1>Ruby Whitespace Shenanigans, Hello World Edition</h1>
+    <p class="intro">A (somewhat silly) post about using Unicode whitespace in Ruby.</p>
+    <p class="date"><a href="/">Quinn Rohlf</a> &middot; 19 Oct 2013</p>
+  </div>
+</header>
+  <div class="page">
+    <div class="content">
+      <div class="post">
+    <section class="post-body">
+      <p>I recently came across <a href="http://www.rubyinside.com/the-split-is-not-enough-whitespace-shenigans-for-rubyists-5980.html">this article</a>, which highlights an interesting side effect of how ruby supports Unicode special characters. Ruby treats the Unicode non-breaking space (U+00A0) like any other Unicode special character, meaning it can be used for variable and method names. The article illustrates this with the following code snippet:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">def  (  )
+      *2
+end
+ =4
+puts   
+</code></pre></div>
+<p>This code outputs 8 when run. It does this by defining a method called <code>nbsp</code> (where <code>nbsp</code> is actually an instance of U+00A0) which takes an argument <code>nbspnbsp</code> and returns <code>nbspnbsp*2</code>. It then defines a variable called <code>nbsp</code> equal to 4 and prints the result of applying the <code>nbsp</code> method to it.</p>
+
+<h1>Further Investigation</h1>
+
+<p>The author of the above post ends it with a dire warning: </p>
+
+<blockquote>
+<p>Please don&#39;t use this in production code or the Ruby gods will come and haunt you in your sleep. </p>
+</blockquote>
+
+<p>However, I believe that there is a time and a place for shenanigans, and that it is here and now.
+<img src="/images/ruby-whitespace-shenanigans/shenanigans.gif" alt="shenanigans"  class="bordered" /></p>
+
+<p>I decided to take the insanity a bit further and write &#39;Hello World&#39; using U+00A0 and int-to-char casting: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      = 1
+      =  + 
+      =   *  + 
+      =    *  
+      = 
+      [      *(   +  )+  , 
+             =     *    + , 
+             =     *    +    -  , 
+            , 
+            =        +    ,
+        *  +    +  , 
+        *    -  *    +   +  , 
+           , 
+           + +  , 
+            , 
+        *    ,     + +  , 
+        ]
+puts      .map(&amp;:chr).join
+</code></pre></div>
+<p>That code snippet will output <code>Hello World</code> if you save it with utf-8 encoding and run it.</p>
+
+<p>(Since your web browser may or may not want to let you copy and paste this into a text editor with the Unicode intact, I suggest downloading a copy from <a href="https://gist.github.com/qrohlf/7045823">this gist</a> if you&#39;d like to try running it for yourself).</p>
+
+<p>This isn&#39;t anything ground-breaking. You can see a non-whitespace version of the program <a href="https://gist.github.com/qrohlf/7046060">here</a>. I define a variable <code>one</code> as the integer literal <code>1</code>, then define <code>two</code>, <code>five</code>, and <code>ten</code> using <code>one</code>. The program then creates an array of the ASCII integer values representing the characters of &quot;Hello World&quot;, expressed mathematically using the variables <code>one</code>, <code>two</code>, <code>five</code>, and <code>ten</code>. It uses variable definitions inside the array definition to shorten the process. The final line casts the integer ASCII values of the &#39;hw&#39; array to ASCII characters, then joins them into a string and prints the string to Stdout.</p>
+
+<p>This is, of course, a very quick-and-dirty proof of concept. I&#39;m sure you could optimize this further with some math to find the greatest common divisors of all the decimal representations of the characters of &quot;Hello World&quot; and reduce the number of arithmetic operators needed to create the array. For now, I&#39;m satisfied to leave it as-is, but if you have a better implementation I&#39;d love to see it. My contact info is in the footer.</p>
+
+<h1>But Wait - There&#39;s More!</h1>
+
+<p>U+00A0 isn&#39;t the only unusual and invisible character in Unicode. Other notables include text control characters, as well as a whole host of other non-standard whitespace characters in the U+0080 to U+00A0 range. I think I&#39;ve done enough damage for now and will leave the exploration of what can (but probably shouldn&#39;t) be done with these characters for another time. </p>
+
+<p>However, I couldn&#39;t resist a quick parting gift:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">puts &quot;‮dlroW olleH‭&quot;
+</code></pre></div>
+<p>is also valid Ruby and will output &quot;Hello World&quot;. Here&#39;s a <a href="https://gist.github.com/qrohlf/7058074">gist</a> if you&#39;re having trouble running it.</p>
+
+    </section>
+    <p class="meta text-right">Like what you just read? <a href="https://tinyletter.com/qrohlf">Subscribe</a>.</p>
+</div>
+    </div>
+  </div>
+</main>
+
+<footer class="colophon">
+  <div class="content">
+    <hr>
+	 <p>Source code for this site is available on <a href="https://github.com/qrohlf/qrohlf.github.io">GitHub</a>. Have a comment, or want to get in touch? Email me at <a href="mailto:qr@qrohlf.com">qr@qrohlf.com</a>, or find me on <a href="https://twitter.com/qrohlf">Twitter</a>, <a href="https://github.com/qrohlf/">GitHub</a>, and <a href="https://keybase.io/qrohlf">Keybase</a>.</p>
+  </div>
+</footer>
+
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-40241848-1', 'qrohlf.com');
+          ga('require', 'displayfeatures');
+          ga('send', 'pageview');
+
+        window.smoothScroll=function(){if(document.querySelectorAll===void 0||window.pageYOffset===void 0||history.pushState===void 0){return}var e=function(e){if(e.nodeName==="HTML")return-window.pageYOffset;return e.getBoundingClientRect().top+window.pageYOffset};var t=function(e){return e<.5?4*e*e*e:(e-1)*(2*e-2)*(2*e-2)+1};var n=function(e,n,r,i){if(r>i)return n;return e+(n-e)*t(r/i)};var r=function(t,r,i){r=r||500;var s=window.pageYOffset;if(typeof t==="number"){var o=parseInt(t)}else{var o=e(t)}var u=Date.now();var a=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||function(e){window.setTimeout(e,15)};var f=function(){var e=Date.now()-u;window.scroll(0,n(s,o,e,r));if(e>r){if(typeof i==="function"){i(t)}}else{a(f)}};f()};var i=function(e){e.preventDefault();if(location.hash!==this.hash)window.history.pushState(null,null,this.hash);r(document.getElementById(this.hash.substring(1)),500,function(e){location.replace("#"+e.id)})};document.addEventListener("DOMContentLoaded",function(){var e=document.querySelectorAll('a[href^="#"]'),t;for(var n=e.length;t=e[--n];){t.addEventListener("click",i,false)}});return r}();
+    </script>
+</body>
+</html>
