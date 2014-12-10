@@ -7,436 +7,63 @@
 		<atom:link href="http://qrohlf.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>Trianglify</title>
-				<description>&lt;p&gt;Last spring, I wrote my first JavaScript library. In fact, this was probably the first time I&amp;#39;d written anything in JS longer than 30 lines of code, and definitely the first time I&amp;#39;d done it without JQuery. It was called &lt;a href=&quot;http://qrohlf.com/trianglify&quot;&gt;Trianglify&lt;/a&gt;, and it generated geometric patterns that looked like this:&lt;/p&gt;
+				<title>Floating Action Button Between Two Views</title>
+				<description>&lt;p&gt;With the introduction of Android Lollipop, a lot of emphasis was given to &lt;a href=&quot;http://www.google.com/design/spec/components/buttons.html#buttons-floating-action-button&quot;&gt;floating action buttons&lt;/a&gt;, otherwise known as FAB. Here I’ll show you my implementation of FAB between two views.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/trianglify/trianglify.png&quot; alt=&quot;example&quot;&gt;&lt;/p&gt;
+&lt;p&gt;In your relative layout create 2 views, one is the header, the other the body. Then add your FAB. The trick is to use negative margin on the FAB to fix it between the views. The elevation on the FAB will only work on Android 5.0 or above.&lt;/p&gt;
 
-&lt;p&gt;It was a small project, and I wrote the initial version in its entirety over the course of a single Thursday. Within two days, it was the most popular piece of code I&amp;#39;d ever written.&lt;/p&gt;
+&lt;h2&gt;layout/main_activity.xml&lt;/h2&gt;
 
-&lt;p&gt;While seeing my project go from &amp;quot;one-off-experiment&amp;quot; to trending on GitHub, Hacker News, Twitter, and Reddit was fun, the most exciting thing for me was what happened after the initial surge of traffic wore off. People stopped playing with the demo and they starting &lt;em&gt;using&lt;/em&gt; it. There was a &lt;a href=&quot;http://nixterrimus.github.io/Triangle-Play-App/&quot;&gt;version&lt;/a&gt; that expanded on my simple demo with more sliders and color control, a &lt;a href=&quot;http://alssndro.github.io/trianglify-background-generator/&quot;&gt;remix&lt;/a&gt; that pulled in new color palettes from colourlovers, even a &lt;a href=&quot;http://asifmallik.github.io&quot;&gt;fork&lt;/a&gt; that used images to get the color mappings. I&amp;#39;d graduated from &amp;#39;package creator&amp;#39; to &amp;#39;package maintainer&amp;#39;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;utf-8&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RelativeLayout&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;xmlns:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;android&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;match_parent&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;match_parent&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orientation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;vertical&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 
-&lt;p&gt;For most people, that&amp;#39;s probably not a very exciting transition. If building out new ideas in code is like a sprint, maintaining them is like an marathon with no spectators that never ends. My experience in software development to this point had been as an intern, student, and freelancer - I&amp;#39;ve never maintained a codebase for more than a few weeks at a time. Now I was doing it in an unfamiliar language, on a project with 3,000+ stars on GitHub.&lt;/p&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;View&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@+id/header&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;match_parent&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;120dp&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
 
-&lt;p&gt;There&amp;#39;s a whole set of skills that are orthogonal to academic coding, but incredibly useful in software development. My users wanted to use Trianglify in Node.js; so I learned about npm, semver, tagging releases in git, and how to write code that would run both on the server and in the browser. I dealt with pull requests and learned how to give good feedback on code contributions. I had to make decisions about browser compatiblity vs. new features. Right now, I&amp;#39;m exploring how to do unit testing properly in Javascript. Overall, I&amp;#39;m certain that I learned more from simply maintaining Trianglify than I did from writing it in the first place.&lt;/p&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;View&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@+id/body&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;match_parent&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;match_parent&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_below&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@id/header&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
 
-&lt;p&gt;That&amp;#39;s the takeaway here. Maintaining the things that you build is an exercise that can broaden your skill set as a software developer dramatically. That lesson has found its way into my approach to picking side projects, the advice I give to my peers, and the cirriculum for the &lt;a href=&quot;http://webdev.qrohlf.com&quot;&gt;class&lt;/a&gt; I teach.&lt;/p&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ImageButton&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;64dp&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;64dp&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@drawable/ic_home&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@+id/fab&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elevation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;1dp&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@drawable/rounded_button&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_alignParentRight&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;true&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_alignBottom&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@id/header&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_marginBottom&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;-32dp&amp;quot;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout_marginRight&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;20dp&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After this is done, all you need to do is to make the button round and set the its background colour. You do this by creating an xml file in your drawable folder. Let’s call it rounded_button.xml &lt;/p&gt;
+
+&lt;h2&gt;drawable/rounded_button.xml&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;utf-8&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;xmlns:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;android&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;oval&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;android:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@android:color/holo_red_dark&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s that simple, all you have to do is style it to your needs.&lt;/p&gt;
 </description>
-				<pubDate>Sun, 26 Oct 2014 11:24:00 +0000</pubDate>
-				<link>http://qrohlf.com/posts/trianglify</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/trianglify</guid>
-			</item>
-		
-			<item>
-				<title>Portland Startup Weekend: Takeaways</title>
-				<description>&lt;p&gt;Portland Startup Weekend is an idea that sounds good at first, but when you really think about it is completely &lt;em&gt;insane&lt;/em&gt;. Pitching, building, and presenting a business in 54 hours isn&amp;#39;t just challenging, it&amp;#39;s sheer lunacy. Fortunately, there seem to be quite a few talented entrepreneurs out there who are willing to sacrifice their weekend, their sleep, and their sanity to participate in the madhouse that is Startup Weekend.&lt;/p&gt;
-
-&lt;p&gt;This year marked my second time as a Startup Weekend participant. Last year I was a developer on the LivFly team, building a platform for people to find running partners online. I learned a ton from that experience, and this year I pitched &lt;a href=&quot;http://spoke.coffee&quot;&gt;Spoke.coffee&lt;/a&gt;, a service to deliver local and fresh coffee and other goods straight to customers via bicycle. LivFly received top honors last year as the overall PDXSW 2013 winner, and this year Spoke.coffee took home the award for best customer validation.&lt;/p&gt;
-
-&lt;p&gt;To me, Startup Weekend isn&amp;#39;t really about the business ideas or even the apps and websites that we build. It&amp;#39;s about the experience, and the huge learning opportunity that experience represents. Even if Spoke.coffee doesn&amp;#39;t continue past today, I&amp;#39;m 100% satisfied with what it accomplished. Our development team got to experience the process of building a web app from start to finish. Our analysis people cut through all the unknowns to figure out how to model our business and translate those models into strategy-changing insights. Our designers worked on challenging projects with absurdly short turnarounds. And as the team leader, I can unequivocally say that I learned more about how to organize and direct a group with diverse talents in a single weekend than I have learned in three years of traditional college education.&lt;/p&gt;
-
-&lt;h1&gt;Startup Weekend is about making mistakes and learning from them.&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Here are some of the lessons that I&amp;#39;ve learned after two years of participation.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2&gt;1. Come prepared&lt;/h2&gt;
-
-&lt;p&gt;Startup Weekend discourages projects that are already partially implemented, and for good reason - starting from scratch is the best way to learn as much as possible in a single weekend. However, that doesn&amp;#39;t mean you can&amp;#39;t prepare by planning out what tools your team is going to use to collaborate and build your business. &lt;/p&gt;
-
-&lt;p&gt;At LivFly in 2013, we spent the first day and a half trying to find the right tools to build and launch our idea, so this year I researched collaboration and development tools before giving my pitch. From day one, our team was able to build and collaborate smoothly with Google Drive and GroupMe, and start building and shipping our MVP immediately with Sinatra, ActiveRecord, Bootstrap, Stripe, and Heroku. Having that robust stack of tools and technologies pre-selected meant we were able to skip the boilerplate involved in getting a modern team up and running and jump straight to the startup-building action.&lt;/p&gt;
-
-&lt;h2&gt;2. Front-load the work&lt;/h2&gt;
-
-&lt;p&gt;Building a business is exhausting, and people do their best work when they&amp;#39;re fresh. Last year the whole team at LivFly was exhausted when it came time to hammer out a business model and perfect our presentation - We&amp;#39;d been working late on both Friday and Saturday night, and Sunday were all had short tempers and weren&amp;#39;t operating at 100%. &lt;/p&gt;
-
-&lt;p&gt;This year, I pushed myself and my team to do as much as possible on Friday night. We stayed up until 3am building our product, and managed to get it finished. Although we were pretty tired when Saturday morning rolled around, having everything built on day 1 meant that we could spend Saturday morning and afternoon doing customer validation, and then go home early and get a good night&amp;#39;s rest for Sunday - arguably the most important day of Startup Weekend since it&amp;#39;s when teams actually ship their products and present to the judging panel.&lt;/p&gt;
-
-&lt;p&gt;This is an extreme example - building a business in two and a half days is never going to happen in the real world. However, I think that the strategy of front-loading the work carries over into any kind of project - it&amp;#39;s far easier to finish something well if most of the hard work is finished early in a project&amp;#39;s lifetime.&lt;/p&gt;
-
-&lt;h2&gt;3. Doing is better than talking&lt;/h2&gt;
-
-&lt;p&gt;This is the mantra of Startup Weekend – so why am I repeating it here? The answer is that Startup Weekend doesn&amp;#39;t always follow its own advice, and it&amp;#39;s worth remembering that doing is more important than talking when the fifth volunteer mentor comes by to give your team advice and expects you to drop what you&amp;#39;re working on and listen. The Startup Weekend mentors are a great resource, but just like every other resource in a business there is a time and a place for listening to mentors. It&amp;#39;s important to remember that the best way to learn is to learn by &lt;em&gt;doing&lt;/em&gt;, and the next time a mentor comes by your table wanting to give you more advice it&amp;#39;s okay to tell them that you&amp;#39;re busy.&lt;/p&gt;
-
-&lt;p&gt;We had a problem at LivFly where we listened to every mentor, volunteer, and random person that walked in the door. This had mixed, even contradictory results - even though we had a solid idea of our business model from the beginning, we ended it rewriting it two or three times after being prompted by mentors who often would contradict the previous advice we had just gotten.&lt;/p&gt;
-
-&lt;p&gt;The takeaway here is that it&amp;#39;s good to have a clear idea of what you&amp;#39;re trying to accomplish, and to put as much time and effort into &lt;em&gt;doing&lt;/em&gt; that thing while minimizing distractions.&lt;/p&gt;
-
-&lt;h1&gt;Startup Weekend is dumb - but go do it anyways!&lt;/h1&gt;
-
-&lt;p&gt;Startup Weekend is a completely unrealistic scenario. 3 days is not enough time to build a sustainable product and business model. The judging pool is typically way skewed towards a certain type of business or enterprise, and the prize packages for the winners are a joke (at least at PDXSW they are). &lt;/p&gt;
-
-&lt;p&gt;So, would I recommend participating in Startup Weekend to a friend? Yes, absolutely! It&amp;#39;s a great way to learn by experience, and a very rewarding thing to do – long as you go into it with the goal of learning as opposed to winning or starting a real business.&lt;/p&gt;
-</description>
-				<pubDate>Mon, 28 Apr 2014 09:26:00 +0100</pubDate>
-				<link>http://qrohlf.com/posts/pdxsw-takeaways</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/pdxsw-takeaways</guid>
-			</item>
-		
-			<item>
-				<title>Happy April First</title>
-				<description>&lt;p&gt;Mischief is an important human tendency. From Arthur C. Clarke&amp;#39;s fictional utopia of Diaspar to the royal courts of medieval times, pranksters have always played an important role in society. I myself firmly believe that April Fools&amp;#39; day is an excellent time to tap into some creativity and to come up with ways to make people laugh. In that spirit, I&amp;#39;d like to share a couple of my own creations:&lt;/p&gt;
-
-&lt;h1&gt;1. Git &lt;em&gt;Push It&lt;/em&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;inspired by &lt;a href=&quot;https://twitter.com/codinghorror/status/21559239552&quot;&gt;this tweet&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Sometimes, you have a coworker whose git commit messages are just missing that extra something. Here&amp;#39;s the fix:&lt;/p&gt;
-
-&lt;p&gt;In your colleague&amp;#39;s git repo, create a commit-msg hook in &lt;code&gt;.git/hooks/commit-msg&lt;/code&gt; with the following contents:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://www.youtube.com/watch?v=vCadcBR95oU&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now all you need to do is &lt;code&gt;chmod +x .git/hooks/commit-msg&lt;/code&gt; and enjoy the fun.&lt;/p&gt;
-
-&lt;h1&gt;2. Remote-Activated ASCII Star Wars&lt;/h1&gt;
-
-&lt;p&gt;Say you want to watch Star Wars... but you&amp;#39;re doing some important work on your machine. Why not use your coworker&amp;#39;s mac to watch it? &lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;The following conditions need to be true for this to work:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The target machine must be running OSX&lt;/li&gt;
-&lt;li&gt;A user account must be logged in on the target machine&lt;/li&gt;
-&lt;li&gt;you must be able to ssh into the target machine as the currently logged-in user&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;To pull it off, ssh into the target and create a &lt;code&gt;starwars.applescript&lt;/code&gt; file somewhere with the following contents:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-applescript&quot; data-lang=&quot;applescript&quot;&gt;&lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Terminal&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;activate&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;System Events&amp;quot;&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;keystroke&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;telnet&amp;quot;&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;keystroke&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;space&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;keystroke&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;towel.blinkenlights.nl&amp;quot;&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;keystroke&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;return&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then simply run the script with:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;osascript starwars.applescript
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;May the force be with you!&lt;/p&gt;
-</description>
-				<pubDate>Tue, 01 Apr 2014 00:00:00 +0100</pubDate>
-				<link>http://qrohlf.com/posts/happy-april-first</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/happy-april-first</guid>
-			</item>
-		
-			<item>
-				<title>Atom Initial Impressions</title>
-				<description>&lt;p&gt;So, Github has a fancy new text editor, &lt;a href=&quot;https://atom.io&quot;&gt;Atom&lt;/a&gt;. I was lucky enough to get in on the beta, and I&amp;#39;ve been using it for all of my programming for the last two days. So far, I really like it. The UI is very similar to Sublime Text and uses many of the same key bindings, so it was pretty easy for me to get my bearings. With that said, there were definitely a few annoyances present in Atom in its out-of-the-box state, so I took those as an opportunity to see just how &amp;quot;modern, approachable, and hackable to the core&amp;quot; Atom really is.&lt;/p&gt;
-
-&lt;p&gt;Here&amp;#39;s the breakdown:&lt;/p&gt;
-
-&lt;h1&gt;1. Color Scheme&lt;/h1&gt;
-
-&lt;p&gt;I use the excellent Soda theme for Sublime Text with the Monokai Soda TextMate theme for syntax highlighting. The default syntax highlighting scheme that ships with Atom is, in my opinion, far inferior to Monokai Soda, so the first order of business was to get that installed.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/atom-initial-impressions/atom-default.png&quot; alt=&quot;atom default theme&quot;&gt;
-&lt;span class=&#39;caption&#39;&gt;Atom default theme&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/atom-initial-impressions/monokai-soda.png&quot; alt=&quot;monokai soda theme&quot;&gt;
-&lt;span class=&#39;caption&#39;&gt;Monokai soda theme&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;I was happy to find that Atom supports TextMate themes and provides a utility to &lt;a href=&quot;https://atom.io/docs/v0.62.0/converting-a-text-mate-theme&quot;&gt;convert them into LESS files&lt;/a&gt; for use as native Atom themes. This is pretty sweet. So, to install Monokai Soda in Atom, I downloaded the &lt;a href=&quot;http://buymeasoda.github.com/soda-theme/extras/colour-schemes.zip&quot;&gt;Monokai Soda TextMate theme&lt;/a&gt;, pointed my terminal to the directory I extracted it to, and converted it with&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;apm init --theme ~/.atom/packages/monokai-soda --convert Monokai&lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;Soda.tmTheme
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;After that, I popped open Atom&amp;#39;s preferences and activated the new syntax theme on the Themes panel. It&amp;#39;s worth noting that Atom has graphical preferences in addition to json configuration files for various settings and key bindings. I&amp;#39;m not entirely sure how I feel about this, and I&amp;#39;m interested to see whether community plugins will tend towards using the preferences GUI or letting users specify their preferences in json.&lt;/p&gt;
-
-&lt;h1&gt;2. Fonts and Font Size&lt;/h1&gt;
-
-&lt;p&gt;The default font size on Atom is HUGE, and I&amp;#39;m a big fan of Adobe&amp;#39;s Source Code Pro for code editing. Fixing both the font size and font family was pretty painless with &lt;code&gt;styles.less&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nc&quot;&gt;.tree-view&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;11px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;.editor&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;font-family&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Source Code Pro&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sans-serif&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;11px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;3. Cursor Blinking&lt;/h1&gt;
-
-&lt;p&gt;One of the first things that bothered me when I started using Atom was that the cursor blinks at a slightly faster rate than every other app on my system. It ruined the whole &amp;quot;native app&amp;quot; feel and set me on edge.&lt;/p&gt;
-
-&lt;p&gt;The cursor blink period is controlled by a hard-coded value in &amp;#39;Resources/app/src/cursor-view.js&amp;#39; inside the app package (right click Atom.app, &amp;#39;Show Package Contents&amp;#39;).&lt;/p&gt;
-
-&lt;p&gt;The culprit is on line 27:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;CursorView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;blinkPeriod&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;800&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This sets the cursor to complete a full blink cycle every 800ms. The OSX default blink period is 1000ms. Apparently that .2s difference is just enough to drive me absolutely crazy.&lt;/p&gt;
-
-&lt;p&gt;As of this writing, I haven&amp;#39;t found a good way to configure this value without editing the app&amp;#39;s source. Atom has a nice Sublime-esque JSON configuration file, but according to the &lt;a href=&quot;https://atom.io/docs/v0.59.0/customizing-atom#configuration-key-reference&quot;&gt;documentation&lt;/a&gt;, there isn&amp;#39;t a key to control the cursor blink rate yet. For now, I&amp;#39;ve just edited &lt;code&gt;cursor-view.js&lt;/code&gt; to set the blinkPeriod to 1000ms. This will get overwritten by any updates, but for now there doesn&amp;#39;t seem to be a better way to modify the blink behavior.&lt;/p&gt;
-
-&lt;p&gt;I also added the following snippet to my &lt;code&gt;styles.less&lt;/code&gt; file for a slight fade transition on the cursor (just like Sublime):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nc&quot;&gt;.editor.is-focused&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.cursor&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;transition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;opacity&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.2s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;&amp;amp;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;blink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;off&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;visibility&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;opacity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;4. Tab Close Icons&lt;/h1&gt;
-
-&lt;p&gt;The last thing that bugged me about the default theme in Atom was the tab close buttons for modified &amp;amp; unsaved files. They show up as an electric blue outlined circle, which kinda ruins the whole subdued monochromatic thing the theme has going.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/atom-initial-impressions/closebutton-default.png&quot; alt=&quot;atom default theme&quot;&gt;
-&lt;span class=&#39;caption&#39;&gt;Atom default modified close button&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/atom-initial-impressions/closebutton-modified.png&quot; alt=&quot;monokai soda theme&quot;&gt;
-&lt;span class=&#39;caption&#39;&gt;My edit&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;I opted to change them to filled-in circles which match the tab title text color, (again, similar to Sublime). Here&amp;#39;s the &lt;code&gt;styles.less&lt;/code&gt; snippet:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nc&quot;&gt;.tab-bar&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.tab.modified&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:not&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:hover&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.close-icon&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4px&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#AAA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;radius&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;12px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;.tab-bar&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.tab.modified&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:hover&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.close-icon&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;inherit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;As of right now, I&amp;#39;m very impressed with Atom. It&amp;#39;s the most polished HTML/CSS/JS desktop app that I&amp;#39;ve ever used, and it&amp;#39;s fantastically hackable. As a web developer who does a lot of front-end work, being able to use LESS and Javascript to hack on my text editor is something of a dream come true, and as someone who uses git for all of my projects the git/GitHub integration is really nice to have.&lt;/p&gt;
-
-&lt;p&gt;There&amp;#39;s definitely some room for improvement (Atom&amp;#39;s soft line wrapping bugged out while I was writing this post, for example), but overall I think that Atom just might become my new favorite editor.&lt;/p&gt;
-</description>
-				<pubDate>Sat, 01 Mar 2014 09:28:00 +0000</pubDate>
-				<link>http://qrohlf.com/posts/atom-initial-impressions</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/atom-initial-impressions</guid>
-			</item>
-		
-			<item>
-				<title>Learn C, Then Learn Computer Science</title>
-				<description>&lt;p&gt;I&amp;#39;m an undergraduate studying computer science. It&amp;#39;s great to get to sink my teeth into interesting, high-level problems like machine learning algorithms and graph theory, but I feel like my formal CS education isn&amp;#39;t touching on some of the fundamentals of how computers work and how to write good code.&lt;/p&gt;
-
-&lt;p&gt;In his post &amp;quot;&lt;a href=&quot;http://shkspr.mobi/blog/2014/02/learning-to-code-vs-learning-computer-science/&quot;&gt;Learning to Code vs. Learning Computer Science&lt;/a&gt;&amp;quot;, Terence Eden raises some excellent points about the importance of learning the algorithms and intellectual principles behind programming. However, while I agree that &amp;quot;no conversation about teaching coding in schools is complete without a theoretical understanding of the science behind the code&amp;quot;, I also think that it&amp;#39;s important to talk about students&amp;#39; understanding of the &lt;em&gt;mechanics&lt;/em&gt; behind the code.&lt;/p&gt;
-
-&lt;p&gt;I&amp;#39;m a 3rd-year computer science student with more experience than most. I learned to program in middle school, writing tic-tac-toe programs in TI-BASIC on a graphing calculator. I&amp;#39;ve also spent three years as an engineering intern at a local computer vision and signal processing company. This puts me in the interesting position of being able to compare what my college computer science/software engineering courses are teaching me versus what my personal explorations and work experience have taught me.&lt;/p&gt;
-
-&lt;p&gt;As a first-year CS student at the University of Southern California&amp;#39;s school of engineering, my CS-101 professor spent a week or two making sure everyone understood the basics of control structures and C syntax, then jumped straight into a detailed and thorough course on the underlying mechanics of code. All our work was done in C, and we went over how memory was addressed and structured, heap memory vs stack memory, the functions of the preprocessor, compiler, and linker, and fundamental data structures like linked lists. While most of this was review for me, some of it wasn&amp;#39;t - as an intern, I had never bothered to think about exactly how pointers functioned at a hardware level, and I&amp;#39;d never implemented any of my own data structures, since they were always provided by a library. I appreciated the chance to re-learn coding from the ground up - but balked when I realized that USC&amp;#39;s program would have me grinding on the same kind of relatively low-level mechanics for the first 3 years of my degree. It was a program that would have made me a great coder, but one which would have failed me as a student of computer &lt;em&gt;science&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;I ended up transferring to a new computer science program at a small liberal arts school in Portland, OR. I was pleased to find that programming courses at Lewis &amp;amp; Clark were heavy on theory and high-level concepts. I wouldn&amp;#39;t have to wait until the second semester of my senior year to take an AI course or study programming language design. But in my classes, I started to notice something odd. In the few courses that were taught using C rather than Java, my classmates would find my code hard to grasp. I got lots of questions about basic C features like structs. This semester I used function pointers in an assignment and later heard them described as &amp;quot;Quinn&amp;#39;s magic C voodoo&amp;quot;. &lt;/p&gt;
-
-&lt;p&gt;This was confusing - my classmates were juniors and seniors who were 3+ years into a computer science degree, yet many of them didn&amp;#39;t seem to have an understanding of how computers worked. They could write high-level code and analyze algorithms, but had never used malloc.&lt;/p&gt;
-
-&lt;p&gt;It turned out the the two required intro CS courses at my new school only dealt with the very basics of control structures and boolean logic before jumping into high-level object oriented programming in Java. Students writing code in C were told never to use malloc, and didn&amp;#39;t have an understanding of the difference between stack and heap variables. &lt;/p&gt;
-
-&lt;p&gt;This is the problem with emphasizing computer science over learning to code. Without an understanding of what&amp;#39;s happening at a low level, my peers ran into issues like C segfaults and Java NPEs and had no idea what to do to debug them. This is a problem that stems from teaching people computer science but not teaching them how to code. Learning to code isn&amp;#39;t just teaching people how to spell - it&amp;#39;s teaching people the meaning behind the words. That&amp;#39;s why I think &amp;quot;learning to code&amp;quot; is just as important as computer science to teach - and teach well - at an undergraduate level.&lt;/p&gt;
-</description>
-				<pubDate>Sun, 09 Feb 2014 00:00:00 +0000</pubDate>
-				<link>http://qrohlf.com/posts/learn-to-code-then-learn-cs</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/learn-to-code-then-learn-cs</guid>
-			</item>
-		
-			<item>
-				<title>404 Page</title>
-				<description>&lt;p&gt;I decided today that it was past time for me to put together a nice custom 404 page. Here it is:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/404/&quot;&gt;&lt;img src=&quot;/images/new-404/404.png&quot; alt=&quot;new 404 page screenshot&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;thrilling.&lt;/em&gt;&lt;/p&gt;
-</description>
-				<pubDate>Mon, 03 Feb 2014 00:00:00 +0000</pubDate>
-				<link>http://qrohlf.com/posts/New-404</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/New-404</guid>
-			</item>
-		
-			<item>
-				<title>5 Examples of Great Minimal Jekyll Blog Designs</title>
-				<description>&lt;p&gt;Whenever I’m embarking on a new design project, I typically start by surfing around to see some examples of how similar sites were designed. It’s a great way to get inspired as well as to inform yourself so that you can make sure your design is unique and memorable when compared to what’s already out there.&lt;/p&gt;
-
-&lt;p&gt;A lot has been said already about the merits of Jekyll as a minimalist publishing platform, but for a lot of Jekyll bloggers that minimalism extends to design as well. The handcrafted layouts I ran into while I was designing my own blog were some of the strongest examples of minimal, content-centric design that I’ve seen on the web. The 5 sites below are ones that I keep coming back to for inspiration when I’m working with a text-heavy project and a minimalist aesthetic.&lt;/p&gt;
-
-&lt;h1&gt;1. Warpspire, by &lt;a href=&quot;https://twitter.com/kneath&quot;&gt;@neath&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/5-best-jekyll-designs/warpspire.png&quot; alt=&quot;warpspire screenshot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://warpspire.com&quot;&gt;Warpspire&lt;/a&gt; is a great example of how a well-chosen and contrasting color palette combined with good vertical rhythm and typography can make a design pop without images or bright colors. Kyle Neath also has some great posts on design, making Warpspire a great place to get inspiration of all kinds.&lt;/p&gt;
-
-&lt;h1&gt;2. Sparanoid, by &lt;a href=&quot;https://twitter.com/tunghsiao&quot;&gt;@tunghsiao&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/5-best-jekyll-designs/sparanoid.png&quot; alt=&quot;sparanoid screenshot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://sparanoid.com/&quot;&gt;Sparanoid&lt;/a&gt; makes great use of hover attributes and a high contrast black-and-white aesthetic to create a spacious feel for the site homepage. Each of the posts is customized with a unique background color and heading icon (&lt;a href=&quot;http://sparanoid.com/work/corner-bracket-lover/&quot;&gt;some&lt;/a&gt; &lt;a href=&quot;http://sparanoid.com/work/instagram-badges/&quot;&gt;examples&lt;/a&gt;), adding personality and playfulness to the design while still keeping a very professional and tight layout.&lt;/p&gt;
-
-&lt;h1&gt;3. Zach Holman, by &lt;a href=&quot;https://twitter.com/holman&quot;&gt;@holman&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/5-best-jekyll-designs/holman.png&quot; alt=&quot;holman screenshot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Zach Holman&amp;#39;s &lt;a href=&quot;http://zachholman.com/&quot;&gt;website&lt;/a&gt; has a really nice layout that makes the most of large images in the header while still letting the content shine. Zach is another GitHubber, and if you haven&amp;#39;t seen any of his talks before you should go check &lt;a href=&quot;http://zachholman.com/talks&quot;&gt;that section&lt;/a&gt; of his site out. Not only are his talks interesting and informative, but his slides are great design examples in and of themselves&lt;/p&gt;
-
-&lt;h1&gt;4. Alex Cican, by &lt;a href=&quot;https://twitter.com/alexcican&quot;&gt;@alexcican&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/5-best-jekyll-designs/cican.png&quot; alt=&quot;cican screenshot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Alex Cican&amp;#39;s &lt;a href=&quot;http://alexcican.com/&quot;&gt;portfolio&lt;/a&gt; is a little bit rough around the edges in places, but it makes up for it with great use of images and a creative navigation system that mimics a restaurant menu (click the button in the upper right hand corner). It&amp;#39;s a good example of how clean design can still convey a lot of personality.&lt;/p&gt;
-
-&lt;h1&gt;5. Minimal Mistakes Theme, by &lt;a href=&quot;https://twitter.com/mmistakes&quot;&gt;@mmistakes&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/5-best-jekyll-designs/mmistakes.png&quot; alt=&quot;minimal mistakes screenshot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://mmistakes.github.io/minimal-mistakes/&quot;&gt;Minimal Mistakes&lt;/a&gt; is actually an open source Jekyll theme released by Michael Rose. It&amp;#39;s similar in some ways to Zach Holman&amp;#39;s site, but the thing that I like about it is how it includes a business card-like section of contact information and a photo next to every page on the site. Not only does the extra column help balance the content on the right, but it also adds a call-to-action to each page - if you like the author&amp;#39;s work, a way to contact them is only a click away. &lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;Jekyll is a great blogging platform because of its minimalism - it&amp;#39;s simple enough to be convenient to use as well as not get in the way when you&amp;#39;re trying to use it slightly differently than it was intended. These 5 examples show how simple software paired with stripped-down design can accomplish great things. &lt;/p&gt;
-</description>
-				<pubDate>Sat, 16 Nov 2013 00:00:00 +0000</pubDate>
-				<link>http://qrohlf.com/posts/5-best-jekyll-designs</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/5-best-jekyll-designs</guid>
-			</item>
-		
-			<item>
-				<title>Ruby Whitespace Shenanigans, Hello World Edition</title>
-				<description>&lt;p&gt;I recently came across &lt;a href=&quot;http://www.rubyinside.com/the-split-is-not-enough-whitespace-shenigans-for-rubyists-5980.html&quot;&gt;this article&lt;/a&gt;, which highlights an interesting side effect of how ruby supports Unicode special characters. Ruby treats the Unicode non-breaking space (U+00A0) like any other Unicode special character, meaning it can be used for variable and method names. The article illustrates this with the following code snippet:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;def  (  )
-      *2
-end
- =4
-puts   
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This code outputs 8 when run. It does this by defining a method called &lt;code&gt;nbsp&lt;/code&gt; (where &lt;code&gt;nbsp&lt;/code&gt; is actually an instance of U+00A0) which takes an argument &lt;code&gt;nbspnbsp&lt;/code&gt; and returns &lt;code&gt;nbspnbsp*2&lt;/code&gt;. It then defines a variable called &lt;code&gt;nbsp&lt;/code&gt; equal to 4 and prints the result of applying the &lt;code&gt;nbsp&lt;/code&gt; method to it.&lt;/p&gt;
-
-&lt;h1&gt;Further Investigation&lt;/h1&gt;
-
-&lt;p&gt;The author of the above post ends it with a dire warning: &lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Please don&amp;#39;t use this in production code or the Ruby gods will come and haunt you in your sleep. &lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;However, I believe that there is a time and a place for shenanigans, and that it is here and now.
-&lt;img src=&quot;/images/ruby-whitespace-shenanigans/shenanigans.gif&quot; alt=&quot;shenanigans&quot;  class=&quot;bordered&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I decided to take the insanity a bit further and write &amp;#39;Hello World&amp;#39; using U+00A0 and int-to-char casting: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;      = 1
-      =  + 
-      =   *  + 
-      =    *  
-      = 
-      [      *(   +  )+  , 
-             =     *    + , 
-             =     *    +    -  , 
-            , 
-            =        +    ,
-        *  +    +  , 
-        *    -  *    +   +  , 
-           , 
-           + +  , 
-            , 
-        *    ,     + +  , 
-        ]
-puts      .map(&amp;amp;:chr).join
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That code snippet will output &lt;code&gt;Hello World&lt;/code&gt; if you save it with utf-8 encoding and run it.&lt;/p&gt;
-
-&lt;p&gt;(Since your web browser may or may not want to let you copy and paste this into a text editor with the Unicode intact, I suggest downloading a copy from &lt;a href=&quot;https://gist.github.com/qrohlf/7045823&quot;&gt;this gist&lt;/a&gt; if you&amp;#39;d like to try running it for yourself).&lt;/p&gt;
-
-&lt;p&gt;This isn&amp;#39;t anything ground-breaking. You can see a non-whitespace version of the program &lt;a href=&quot;https://gist.github.com/qrohlf/7046060&quot;&gt;here&lt;/a&gt;. I define a variable &lt;code&gt;one&lt;/code&gt; as the integer literal &lt;code&gt;1&lt;/code&gt;, then define &lt;code&gt;two&lt;/code&gt;, &lt;code&gt;five&lt;/code&gt;, and &lt;code&gt;ten&lt;/code&gt; using &lt;code&gt;one&lt;/code&gt;. The program then creates an array of the ASCII integer values representing the characters of &amp;quot;Hello World&amp;quot;, expressed mathematically using the variables &lt;code&gt;one&lt;/code&gt;, &lt;code&gt;two&lt;/code&gt;, &lt;code&gt;five&lt;/code&gt;, and &lt;code&gt;ten&lt;/code&gt;. It uses variable definitions inside the array definition to shorten the process. The final line casts the integer ASCII values of the &amp;#39;hw&amp;#39; array to ASCII characters, then joins them into a string and prints the string to Stdout.&lt;/p&gt;
-
-&lt;p&gt;This is, of course, a very quick-and-dirty proof of concept. I&amp;#39;m sure you could optimize this further with some math to find the greatest common divisors of all the decimal representations of the characters of &amp;quot;Hello World&amp;quot; and reduce the number of arithmetic operators needed to create the array. For now, I&amp;#39;m satisfied to leave it as-is, but if you have a better implementation I&amp;#39;d love to see it. My contact info is in the footer.&lt;/p&gt;
-
-&lt;h1&gt;But Wait - There&amp;#39;s More!&lt;/h1&gt;
-
-&lt;p&gt;U+00A0 isn&amp;#39;t the only unusual and invisible character in Unicode. Other notables include text control characters, as well as a whole host of other non-standard whitespace characters in the U+0080 to U+00A0 range. I think I&amp;#39;ve done enough damage for now and will leave the exploration of what can (but probably shouldn&amp;#39;t) be done with these characters for another time. &lt;/p&gt;
-
-&lt;p&gt;However, I couldn&amp;#39;t resist a quick parting gift:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;puts &amp;quot;‮dlroW olleH‭&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;is also valid Ruby and will output &amp;quot;Hello World&amp;quot;. Here&amp;#39;s a &lt;a href=&quot;https://gist.github.com/qrohlf/7058074&quot;&gt;gist&lt;/a&gt; if you&amp;#39;re having trouble running it.&lt;/p&gt;
-</description>
-				<pubDate>Sat, 19 Oct 2013 00:00:00 +0100</pubDate>
-				<link>http://qrohlf.com/posts/ruby-whitespace-shenanigans</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/ruby-whitespace-shenanigans</guid>
-			</item>
-		
-			<item>
-				<title>My Personal Project Recipe</title>
-				<description>&lt;p&gt;It&amp;#39;s been a while since I took on a development project purely for personal reasons. My last big effort was &lt;a href=&quot;https://github.com/qrohlf/excellentresume&quot;&gt;excellentresume&lt;/a&gt;, a PHP-based system for generating interactive HTML resumes from an XML-based format. It was a fun project that taught me a lot, however I wouldn&amp;#39;t really categorize it as a success. I lost interest in the project before I was satisfied with the end result, and I didn&amp;#39;t learn as much as I&amp;#39;d hoped about creating RESTful APIs because I never got around to building one for the app. I&amp;#39;d tried too hard to make it reusable and useful for other people, and in the process I sacrificed a lot of simplicity as well as the personality that a resume should have.&lt;/p&gt;
-
-&lt;p&gt;With my latest project, &lt;a href=&quot;http://qrohlf.com/Lisst&quot;&gt;Lisst&lt;/a&gt;, I set out to build a great self-hosted list writing app. It would use best practices, look amazing, and have a target audience of exactly one person: me. I wanted to avoid the mistakes that had led to me losing interest in excellentresume, so I decided to build it as an iteration of &amp;quot;Where&amp;#39;s Quinn&amp;quot;, an existing project that I had created a year ago and had been using continuously since I&amp;#39;d finished it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/creating-lisst/whereis-old.png&quot; alt=&quot;old Where&#39;s Quinn site&quot; /&gt;
-&lt;em&gt;The old &amp;quot;Where&amp;#39;s Quinn&amp;quot; site&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;quot;Where&amp;#39;s Quinn&amp;quot; was just a static website with a table of all my adventures, written in html &amp;amp; css and updated by hand. I used it to let my family keep track of when I was off the grid, and as a trip log that I could show to people when they asked what I&amp;#39;d been up to lately. This approach was simple, but it had a big drawback: editing the site required an FTP client and a decent text editor, plus I had to type &lt;code&gt;&amp;lt;tr&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;td&amp;gt;&lt;/code&gt; a half-dozen times just to add one row to the table. &lt;/p&gt;
-
-&lt;p&gt;I had three goals in mind when I started writing Lisst. First, I wanted to dip my toe into web development with Ruby. Second, I wanted to replace &amp;quot;Where&amp;#39;s Quinn&amp;quot; with something that I could update easily, from anything with a web browser. Finally, I wanted to challenge myself to build something that was intuitively simple in the same vein as an Apple product or Hemingway novel. This final goal was probably the most ambitious of the three.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/creating-lisst/lisst.png&quot; alt=&quot;Lisst at Where&#39;s Quinn&quot; /&gt;
-&lt;em&gt;&amp;quot;Where&amp;#39;s Quinn&amp;quot;, now using Lisst&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;The result of these goals was a project that I found interesting and rewarding. I had the unfamiliarity of a new language to keep me on my toes and shake up some of my old habits, the challenge of trying to build a web application with as little extraneous code as possible, and the motivation of wanting a replacement for &amp;quot;Where&amp;#39;s Quinn&amp;quot; to push me through the development snags. While there were definitely some problems with my original goals - I spent three days trying to use a markdown file as a data store because I thought that a database wouldn&amp;#39;t be &amp;quot;simple&amp;quot; enough - I credit the success of the project to those three basic goals. They created the right mix of learning, motivation, and creative opportunity to keep me interested in the project, and the direction that they lent to my work led to a useful end-result. &lt;/p&gt;
-
-&lt;p&gt;I consider Lisst to be my most successful personal project, and I&amp;#39;ve spent some time thinking about how to translate that success to future endeavors. While it helped that my goals for Lisst were specific, that specificity also makes them hard to apply to other plans. So, I&amp;#39;ve come up with another set of three goals to use when I plan a side project, to make sure that it will be interesting, useful, and fun:&lt;/p&gt;
-
-&lt;h1&gt;1. Have a use, not a use case.&lt;/h1&gt;
-
-&lt;p&gt;One of the problems that I had with excellentresume was that I had a general idea of what I wanted it to be used for (an online resume for someone applying to jobs in multiple sectors), but I didn&amp;#39;t really &lt;em&gt;need&lt;/em&gt; that myself, as I was applying exclusively to jobs in the software industry while I was building it. With Lisst, I had a specific site that I used on a weekly basis that I wanted to upgrade with a better, more functional system. This gave me more motivation, more focus, and it helped me differentiate between necessary and extraneous features.&lt;/p&gt;
-
-&lt;h1&gt;2. Pick a new language/system.&lt;/h1&gt;
-
-&lt;p&gt;I built excellentresume with PHP because I wanted to get experience building web APIs and thought that using a language that was familiar would make learning easier. Instead, it made working on my project feel a lot like the drudgery I was used to doing with PHP, and didn&amp;#39;t end up teaching me very much. Using Ruby for the first time for Lisst felt new and exciting, and I got to discover cool features of the language throughout the project. I got to learn an entirely new language, discover a new ecosystem, &lt;em&gt;and&lt;/em&gt; build something useful. I like Ruby enough that I&amp;#39;d consider using it for my next side project, but even if I do I&amp;#39;ll be using a framework other than Sinatra because I think a lot of my motivation for side projects comes from the desire to explore and learn about new things.&lt;/p&gt;
-
-&lt;h1&gt;3. Be ambitious.&lt;/h1&gt;
-
-&lt;p&gt;While it may not seem like a simple list webapp like Lisst is a particularly ambitious project, it was for me largely because of the goal of simplicity. To that end, I had to implement things I&amp;#39;d never done before like save-as-you-type, a RESTful web interface, and a live demo without a login. Lisst was fun because it was a challenge to build the &lt;em&gt;best&lt;/em&gt; list webapp I was capable of, and I like challenges. Being ambitious with my goals for the project helped me push myself and learn more in the process. It kept things interesting.&lt;/p&gt;
-
-&lt;p&gt;Now that I have a recipe for making sure my side projects are interesting, useful, and informative, I look forward to trying it out on the next one. If you have any interesting goals or ideas that you incorporate when you&amp;#39;re planning a personal project, I&amp;#39;d love to hear about them (you can reach me via &lt;a href=&quot;https://twitter.com/qrohlf&quot;&gt;@qrohlf&lt;/a&gt; or &lt;a href=&quot;mailto:qr@qrohlf.com&quot;&gt;qr@qrohlf.com&lt;/a&gt;). &lt;/p&gt;
-</description>
-				<pubDate>Sat, 27 Jul 2013 00:00:00 +0100</pubDate>
-				<link>http://qrohlf.com/posts/creating-lisst</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/creating-lisst</guid>
-			</item>
-		
-			<item>
-				<title>3D Polar ListPlots in Mathematica</title>
-				<description>&lt;p&gt;I recently needed to plot some polar data for a project at work, and the data happened to be 3-dimensional. In addition to the standard rotation and radius, it had a third dimension that corresponded to a strength metric. Unfortunately, &lt;em&gt;Mathematica&lt;/em&gt; (my tool of choice for data manipulation and plotting) lacks native support for 3D plotting in the polar coordinate system. It does, however, have excellent support for list/matrix manipulation, so I was able to put together this one-liner to produce a 3D plot from a &lt;code&gt;N x 3&lt;/code&gt; matrix of &lt;code&gt;θ, r, h&lt;/code&gt; coordinates:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ListPolarPlot3D[data_, opts___] := Module[{polarConvert}, polarConvert[coords_] := {coords[[2]]*Cos[coords[[1]] Degree], coords[[2]]*Sin[coords[[1]] Degree], coords[[3]]}; ListPlot3D[Map[polarConvert, data], Evaluate[opts]]]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;After pasting that into your &lt;em&gt;Mathematica&lt;/em&gt; notebook, you can easily generate 3D plots of polar coordinate data by calling &lt;code&gt;ListPolarPlot3D&lt;/code&gt;. For example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ListPolarPlot3D[Table[{n, n/2, Sin[n*4 Degree]}, {n, 0, 1080}],  ColorFunction -&amp;gt; &amp;quot;RedBlueTones&amp;quot;]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Gives you this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/3D-Polar-ListPlots-in-Mathematica/exampleplot.png&quot; alt=&quot;Example Polar Plot&quot; class=&quot;bordered&quot; /&gt;&lt;/p&gt;
-
-&lt;h1&gt;Breakdown&lt;/h1&gt;
-
-&lt;p&gt;Here&amp;#39;s what each part of the snippet does:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ListPolarPlot3D[data_, opts___] := 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Define a function called &lt;code&gt;ListPolarPlot3D&lt;/code&gt; that takes a variable number of arguments. Store the first argument in the &lt;code&gt;data&lt;/code&gt; variable, and all the others in the &lt;code&gt;opts&lt;/code&gt; variable. The triple-underscore means &amp;quot;zero or more arguments&amp;quot;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Module[{polarConvert}, 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Create a local scope for the &lt;code&gt;polarConvert&lt;/code&gt; function so that it doesn&amp;#39;t interfere with anything in the global scope that might be called &lt;code&gt;polarConvert&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;polarConvert[coords_] := {coords[[2]]*Cos[coords[[1]] Degree], coords[[2]]*Sin[coords[[1]] Degree], coords[[3]]};
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Use the identities &lt;code&gt;x = r × cos(θ)&lt;/code&gt; and &lt;code&gt;y = r × sin(θ)&lt;/code&gt; to convert the polar coordinates to Cartesian, and leave the &lt;code&gt;y&lt;/code&gt; coordinate alone&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ListPlot3D[Map[polarConvert, data], Evaluate[opts]]]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This does three things. &lt;code&gt;Map[polarConvert, data]&lt;/code&gt; applies the polar coordinate conversion function to each coordinate in the data, then returns the converted dataset. &lt;code&gt;Evaluate[opts]&lt;/code&gt; allows us to pass in a List of options to &lt;code&gt;ListPlot3D&lt;/code&gt; bypassing the &lt;code&gt;HoldAll&lt;/code&gt; attribute that &lt;code&gt;ListPlot3D&lt;/code&gt; has by default. &lt;code&gt;ListPlot3D&lt;/code&gt; takes the converted cartesian data and evaluated options and generates a 3D plot from them. The final closing bracket closes the &lt;code&gt;Module&lt;/code&gt; and returns the &lt;code&gt;ListPlot3D&lt;/code&gt;. &lt;/p&gt;
-
-&lt;h1&gt;Modifications&lt;/h1&gt;
-
-&lt;p&gt;It&amp;#39;s pretty easy to tweak the snippet to suit your needs. Here are a couple of examples:&lt;/p&gt;
-
-&lt;h2&gt;Use radians instead of degrees&lt;/h2&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ListPolarPlot3D[data_, opts___] := Module[{polarConvert}, polarConvert[coords_] := {coords[[2]]*Cos[coords[[1]]], coords[[2]]*Sin[coords[[1]]], coords[[3]]}; ListPlot3D[Map[polarConvert, data], Evaluate[opts]]]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;Render the data as points rather than a surface&lt;/h2&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ListPolarPointPlot3D[data_, opts___] := Module[{polarConvert}, polarConvert[coords_] := {coords[[2]]*Cos[coords[[1]] Degree], coords[[2]]*Sin[coords[[1]] Degree], coords[[3]]}; ListPointPlot3D[Map[polarConvert, data], Evaluate[opts]]]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;Limitations&lt;/h1&gt;
-
-&lt;p&gt;There are a few things to note when using this technique. First, &lt;em&gt;Mathematica&lt;/em&gt; wants to automatically scale the axes by default. This can result in improperly displayed graphs if the scale for the &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; axes is different. I recommend setting your &lt;code&gt;xy&lt;/code&gt; scale explicitly (i.e. &lt;code&gt;PlotRange -&amp;gt; {{-10, 10}, {-10, 10}, Automatic})&lt;/code&gt;). &lt;/p&gt;
-
-&lt;p&gt;Second, you&amp;#39;re going to have Cartesian axes displayed. Short of really digging into &lt;em&gt;Mathematica&lt;/em&gt;&amp;#39;s &lt;code&gt;Graphics3D&lt;/code&gt; implementation, there&amp;#39;s really no good way around this as the way that the whole technique works is by mapping the polar data into the Cartesian plane.&lt;/p&gt;
-</description>
-				<pubDate>Wed, 26 Jun 2013 00:00:00 +0100</pubDate>
-				<link>http://qrohlf.com/posts/3D-Polar-ListPlots-in-Mathematica</link>
-				<guid isPermaLink="true">http://qrohlf.com/posts/3D-Polar-ListPlots-in-Mathematica</guid>
+				<pubDate>Tue, 09 Dec 2014 00:00:00 +0000</pubDate>
+				<link>http://qrohlf.com/posts/floating-action-button</link>
+				<guid isPermaLink="true">http://qrohlf.com/posts/floating-action-button</guid>
 			</item>
 		
 	</channel>
