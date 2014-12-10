@@ -58,5 +58,7 @@ After this is done, all you need to do is to make the button round and set the i
 </shape>
 {% endhighlight %}
 
-It’s that simple, all you have to do is style it to your needs.
+It’s that simple, all you have to do is style it to your needs and you will have something looking like the image below!
+
+![Alt fab](/images/blog/fab-phone.png)
 
